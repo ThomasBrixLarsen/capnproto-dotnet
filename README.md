@@ -1,4 +1,4 @@
-# capnproto-dotnet: Cap'n Proto for C#/.Net
+# capnproto-dotnet: Cap'n Proto for C#/.NET
 
 [Cap'n Proto](http://capnproto.org) is an extremely efficient protocol for sharing data
 and capabilities, and capnproto-dotnet is a pure C# implementation.
@@ -6,8 +6,9 @@ and capabilities, and capnproto-dotnet is a pure C# implementation.
 # State
 
 * Passes Cap'n Proto testsuite.
+* 5-15x slower than the official C++ implementation (see [benchmarks](#benchmarks)).
 * .NET 3.5 - Can be used from Unity3D.
-* Missing porting of generics.
+* Port of generics not done yet.
 * Missing RPC part of Cap'n Proto.
 * Missing JSON codec (workaround: capnp tool can convert to and from JSON).
 * Missing Cap'n Proto toString format (workaround: capnp tool can convert to and from text format).
@@ -67,4 +68,62 @@ Bob: bob@example.com
   home phone: 555-4567
   work phone: 555-7654
   unemployed
+```
+
+# <a name="benchmarks"></a>Benchmarks
+
+Benchmarked on Skylake i7. Best of three runs.
+
+```bash
+csc /optimize+ /r:runtime/bin/Release/CapnProto-dotnet.dll benchmark/CarSales.cs benchmark/CarSalesSchema.cs benchmark/Common.cs benchmark/TestCase.cs benchmark/Compression.cs benchmark/Packed.cs benchmark/Uncompressed.cs
+
+[capnproto-dotnet]$ time ./CarSales.exe object 0 none 20000
+real    0m5,772s
+user    0m5,569s
+sys     0m0,190s
+
+[capnproto-c++]$ time ./capnproto-carsales object no-reuse none 20000
+real    0m0,410s
+user    0m0,406s
+sys     0m0,001s
+
+[capnproto-c++]$ time ./capnproto-carsales object reuse none 20000
+real    0m0,350s
+user    0m0,346s
+sys     0m0,002s
+
+csc /optimize+ /r:runtime/bin/Release/CapnProto-dotnet.dll benchmark/CatRank.cs benchmark/CatRankSchema.cs benchmark/Common.cs benchmark/TestCase.cs benchmark/Compression.cs benchmark/Packed.cs benchmark/Uncompressed.cs
+
+[capnproto-dotnet]$ time ./CatRank.exe object 0 none 20000
+real    0m54,494s
+user    0m52,739s
+sys     0m1,647s
+
+[capnproto-c++]$ time ./capnproto-catrank object no-reuse none 20000
+real    0m11,259s
+user    0m10,789s
+sys     0m0,422s
+
+[capnproto-c++]$ time ./capnproto-catrank object reuse none 20000
+real    0m10,287s
+user    0m10,251s
+sys     0m0,003s
+
+csc /optimize+ /r:runtime/bin/Release/CapnProto-dotnet.dll benchmark/Eval.cs benchmark/EvalSchema.cs benchmark/Common.cs benchmark/TestCase.cs benchmark/Compression.cs benchmark/Packed.cs benchmark/Uncompressed.cs
+
+[capnproto-dotnet]$ time ./Eval.exe object 0 none 20000
+real    0m0,493s
+user    0m0,425s
+sys     0m0,071s
+
+[capnproto-c++]$ time ./capnproto-eval object no-reuse none 20000
+real    0m0,191s
+user    0m0,189s
+sys     0m0,002s
+
+[capnproto-c++]$ time ./capnproto-eval object reuse none 20000
+real    0m0,185s
+user    0m0,183s
+sys     0m0,001s
+
 ```

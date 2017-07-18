@@ -1,0 +1,1 @@
+csc /optimize+ /r:runtime/bin/Release/CapnProto-dotnet.dll benchmark/CarSales.cs benchmark/CarSalesSchema.cs benchmark/Common.cs benchmark/TestCase.cs benchmark/Compression.cs benchmark/Packed.cs benchmark/Uncompressed.cs
