@@ -80,10 +80,22 @@ namespace java.nio
 			}
 		}
 		
+		private void checkPutLimit(int index, int inc)
+		{
+			if(index + inc > limit_)
+			{
+				System.Console.WriteLine("index: " + index.ToString() + " + " + inc.ToString() + " > " + limit_.ToString() + ", offset: " + offset.ToString());
+				throw new BufferUnderflowException();
+			}
+		}
+		
 		private void checkPutLimit(int inc)
 		{
 			if(index + inc > limit_)
+			{
+				System.Console.WriteLine("index: " + index.ToString() + " + " + inc.ToString() + " > " + limit_.ToString() + ", offset: " + offset.ToString());
 				throw new BufferUnderflowException();
+			}
 		}
 		
 		public void clear()
@@ -245,10 +257,9 @@ namespace java.nio
 		
 		public void put(byte[] data, int index)
 		{
-			checkPutLimit(data.Length);
+			checkPutLimit(offset+index, data.Length);
 			for(int i = 0; i < data.Length; i++)
-				buffer[index+i] = data[i];
-			index += data.Length;
+				buffer[offset+index+i] = data[i];
 		}
 		
 		public void put(ByteBuffer src)
@@ -277,27 +288,27 @@ namespace java.nio
 		
 		public void putShort(int pos, short src)
 		{
-			put(c.GetBytes(src), pos+offset);
+			put(c.GetBytes(src), pos);
 		}
 		
 		public void putInt(int pos, int src)
 		{
-			put(c.GetBytes(src), pos+offset);
+			put(c.GetBytes(src), pos);
 		}
 		
 		public void putLong(int pos, long src)
 		{
-			put(c.GetBytes(src), pos+offset);
+			put(c.GetBytes(src), pos);
 		}
 		
 		public void putFloat(int pos, float src)
 		{
-			put(c.GetBytes(src), pos+offset);
+			put(c.GetBytes(src), pos);
 		}
 		
 		public void putDouble(int pos, double src)
 		{
-			put(c.GetBytes(src), pos+offset);
+			put(c.GetBytes(src), pos);
 		}
 		
 		public int remaining()
