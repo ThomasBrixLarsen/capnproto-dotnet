@@ -101,12 +101,9 @@ namespace Capnproto
 				}
 			}
 			
-			public int Size
+			public int Length
 			{
-				get
-				{
-					return this.size;
-				}
+				get { return this.size; }
 			}
 			
 			public java.nio.ByteBuffer asByteBuffer()
@@ -157,6 +154,11 @@ namespace Capnproto
 				this.buffer = buffer;
 				this.offset = offset;
 				this.size = size;
+			}
+			
+			public int Length
+			{
+				get { return this.size; }
 			}
 			
 			public java.nio.ByteBuffer asByteBuffer()
